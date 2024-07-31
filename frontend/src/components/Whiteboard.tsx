@@ -22,7 +22,7 @@ const Whiteboard = () => {
       if (ctxFound) {
         ctxFound.lineCap = 'round';
         ctxFound.lineWidth = markerSize;
-        ctxFound.fillStyle = markerColor;
+        ctxFound.strokeStyle = markerColor;
         setCtx(ctxFound);
       }
     }
@@ -54,7 +54,6 @@ const Whiteboard = () => {
 
     if (button === 0) { // left mouse
       ctx.lineWidth = markerSize;
-      ctx.fillStyle = markerColor;
       ctx.strokeStyle = markerColor;
       ctx.beginPath();
 
