@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend/
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:3000
+    ports:
+      - "3000:3000"
+  frontend:
+    build: ./frontend/
+    ports:
+      - "4000:4000"
+    volumes:
+      - type: bind
+        source: ./frontend/src
+        target: /app/src
+      - type: bind
+        source: ./frontend/public
+        target: /app/public
+    command: npm run dev
