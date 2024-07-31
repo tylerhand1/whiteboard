@@ -18,9 +18,22 @@ const Controls = () => {
     dispatch(changeColor(color));
   };
 
+  const handleDownloadClick = () => {
+    const canvas = document.querySelector('canvas');
+    const image = canvas?.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+
+    if (image) {
+      const element = document.createElement('a');
+      const filename = 'drawing.png';
+      element.setAttribute('href', image);
+      element.setAttribute('download', filename);
+      element.click();
+    }
+  };
+
   return (
     <div className='controls-container'>
-      <div className='size-picker-container'>
+      <div className='btn-container'>
         <button
           value='2'
           onClick={handleSizeClick}
@@ -46,59 +59,53 @@ const Controls = () => {
           Extra Large
         </button>
       </div>
-      <div className='color-picker-container'>
+      <div className='btn-container color-picker-container'>
         <button
           value='black'
+          style={{ backgroundColor: 'black' }}
           onClick={handleColorClick}
-        >
-          Black
-        </button>
+        />
         <button
           value='red'
+          style={{ backgroundColor: 'red' }}
           onClick={handleColorClick}
-        >
-          Red
-        </button>
+        />
         <button
           value='orange'
+          style={{ backgroundColor: 'orange' }}
           onClick={handleColorClick}
-        >
-          Orange
-        </button>
+        />
         <button
           value='yellow'
+          style={{ backgroundColor: 'yellow' }}
           onClick={handleColorClick}
-        >
-          Yellow
-        </button>
+        />
         <button
           value='blue'
+          style={{ backgroundColor: 'blue' }}
           onClick={handleColorClick}
-        >
-          Blue
-        </button>
+        />
         <button
           value='#964B00'
+          style={{ backgroundColor: '#964B00' }}
           onClick={handleColorClick}
-        >
-          Brown
-        </button>
+        />
         <button
           value='green'
+          style={{ backgroundColor: 'green' }}
           onClick={handleColorClick}
-        >
-          Green
-        </button>
+        />
         <button
           value='white'
+          style={{ backgroundColor: 'white' }}
           onClick={handleColorClick}
-        >
-          White
-        </button>
+        />
       </div>
-      <div className='download-btn-container'>
-        <button>Download</button>
-      </div>
+      <button
+        onClick={handleDownloadClick}
+      >
+        Download
+      </button>
     </div>
   );
 };

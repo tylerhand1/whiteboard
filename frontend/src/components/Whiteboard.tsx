@@ -21,12 +21,22 @@ const Whiteboard = () => {
       const ctxFound: CanvasRenderingContext2D | null = canvas.getContext('2d');
       if (ctxFound) {
         ctxFound.lineCap = 'round';
-        ctxFound.lineWidth = markerSize;
-        ctxFound.strokeStyle = markerColor;
+        ctxFound.fillStyle = 'white';
+        ctxFound.fillRect(0, 0, canvas.width, canvas.height);
         setCtx(ctxFound);
       }
     }
-  }, [canvas, setCanvas, ctx, setCtx, markerSize, markerColor]);
+  }, [canvas, setCanvas, ctx, setCtx]);
+
+  useEffect(() => {
+    if (ctx)
+      ctx.strokeStyle = markerColor;
+  }, [ctx, markerColor]);
+
+  useEffect(() => {
+    if (ctx)
+      ctx.lineWidth = markerSize;
+  }, [ctx, markerSize]);
 
   const handleMouseDown = (event: React.MouseEvent<HTMLElement>) => {
     if (canvas === null || ctx === null) {
