@@ -1,0 +1,16 @@
+header {
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+
+  border-bottom: 3px solid var(--highlight-color);
+}
+
+@media only screen and (min-width: 700px) {
+  header {
+    padding: 16px;
+  }
+}
+
+@media only screen and (min-widht: 1000px) {
+}
