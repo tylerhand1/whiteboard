@@ -1,14 +1,11 @@
 import Header from '@/components/Header';
+import Whiteboard from '@/components/Whiteboard';
 
 const App = () => {
   return (
     <>
       <Header />
-      <main>
-      <div className='whiteboard'>
-
-      </div>
-      </main>
+      <Whiteboard />
     </>
   );
 };
