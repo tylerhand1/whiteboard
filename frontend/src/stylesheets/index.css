@@ -1,4 +1,6 @@
 @import url('./fonts.css');
+@import url('./header.css');
+
 *,
 *::before,
 *::after {
@@ -7,8 +9,28 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg-color: #222f3e;
+  --primary-color: #f1f2f6;
+  --highlight-color: #2ed573;
+}
+
 html,
 body,
 #root {
   min-height: 100vh;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 3.2rem;
 }
