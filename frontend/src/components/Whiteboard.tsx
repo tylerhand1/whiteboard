@@ -51,14 +51,11 @@ const Whiteboard = () => {
       ctx.beginPath();
 
       ctx.moveTo(mousePosition.x, mousePosition.y);
-      console.log('before', mousePosition);
       setMousePosition({
         x: clientX - leftOffset,
         y: clientY - topOffset,
       });
-
       ctx.lineTo(clientX - leftOffset, clientY - topOffset);
-      console.log(mousePosition);
       ctx.stroke();
     }
   };
