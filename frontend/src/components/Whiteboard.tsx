@@ -61,7 +61,6 @@ const Whiteboard = () => {
   };
 
   return (
-    <main>
       <canvas
         id='whiteboard-canvas'
         className='whiteboard-canvas'
@@ -72,7 +71,6 @@ const Whiteboard = () => {
         width={918}
         height={512}
       />
-    </main>
   );
 };
 

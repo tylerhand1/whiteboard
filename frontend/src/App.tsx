@@ -1,11 +1,15 @@
 import Header from '@/components/Header';
 import Whiteboard from '@/components/Whiteboard';
+import Controls from '@/components/Controls';
 
 const App = () => {
   return (
     <>
       <Header />
-      <Whiteboard />
+      <main>
+        <Whiteboard />
+        <Controls />
+      </main>
     </>
   );
 };
