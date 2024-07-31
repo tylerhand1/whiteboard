@@ -12,6 +12,7 @@ const Whiteboard = () => {
   });
 
   const markerSize = useSelector((state: IState) => state.size);
+  const markerColor = useSelector((state: IState) => state.color);
 
   useEffect(() => {
     const canvasElement: HTMLCanvasElement | null = document.querySelector('#whiteboard-canvas');
@@ -21,10 +22,11 @@ const Whiteboard = () => {
       if (ctxFound) {
         ctxFound.lineCap = 'round';
         ctxFound.lineWidth = markerSize;
+        ctxFound.fillStyle = markerColor;
         setCtx(ctxFound);
       }
     }
-  }, [canvas, setCanvas, ctx, setCtx, markerSize]);
+  }, [canvas, setCanvas, ctx, setCtx, markerSize, markerColor]);
 
   const handleMouseDown = (event: React.MouseEvent<HTMLElement>) => {
     if (canvas === null || ctx === null) {
@@ -52,7 +54,8 @@ const Whiteboard = () => {
 
     if (button === 0) { // left mouse
       ctx.lineWidth = markerSize;
-      ctx.lineCap = 'round';
+      ctx.fillStyle = markerColor;
+      ctx.strokeStyle = markerColor;
       ctx.beginPath();
 
       ctx.moveTo(mousePosition.x, mousePosition.y);
