@@ -4,6 +4,11 @@ const App = () => {
   return (
     <>
       <Header />
+      <main>
+      <div className='whiteboard'>
+
+      </div>
+      </main>
     </>
   );
 };
