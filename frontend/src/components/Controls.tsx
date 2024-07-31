@@ -1,10 +1,37 @@
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { changeSize } from '@/reducers/sizeReducer';
+
 const Controls = () => {
+  const dispatch = useDispatch();
+
+  const handleSizeClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget as HTMLInputElement;
+    const size = Number.parseInt(button.value);
+    dispatch(changeSize(size));
+  };
+
   return (
     <div className='controls-container'>
       <div className='size-picker-container'>
-        <button>Small</button>
-        <button>Medium</button>
-        <button>Large</button>
+        <button
+          value='2'
+          onClick={handleSizeClick}
+        >
+          Small
+        </button>
+        <button
+          value='5'
+          onClick={handleSizeClick}
+        >
+          Medium
+        </button>
+        <button
+          value='10'
+          onClick={handleSizeClick}
+        >
+          Large
+        </button>
       </div>
       <div className='color-picker-container'>
         <button>Black</button>

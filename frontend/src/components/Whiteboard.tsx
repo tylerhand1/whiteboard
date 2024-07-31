@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { IState } from '@/types';
 
 const Whiteboard = () => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
@@ -9,6 +11,8 @@ const Whiteboard = () => {
     y: 0,
   });
 
+  const markerSize = useSelector((state: IState) => state.size);
+
   useEffect(() => {
     const canvasElement: HTMLCanvasElement | null = document.querySelector('#whiteboard-canvas');
     setCanvas(canvasElement);
@@ -16,10 +20,11 @@ const Whiteboard = () => {
       const ctxFound: CanvasRenderingContext2D | null = canvas.getContext('2d');
       if (ctxFound) {
         ctxFound.lineCap = 'round';
+        ctxFound.lineWidth = markerSize;
         setCtx(ctxFound);
       }
     }
-  }, [canvas, setCanvas, ctx, setCtx]);
+  }, [canvas, setCanvas, ctx, setCtx, markerSize]);
 
   const handleMouseDown = (event: React.MouseEvent<HTMLElement>) => {
     if (canvas === null || ctx === null) {
@@ -46,7 +51,7 @@ const Whiteboard = () => {
     const topOffset: number = canvas.getBoundingClientRect().top;
 
     if (button === 0) { // left mouse
-      ctx.lineWidth = 5;
+      ctx.lineWidth = markerSize;
       ctx.lineCap = 'round';
       ctx.beginPath();
 
@@ -61,16 +66,16 @@ const Whiteboard = () => {
   };
 
   return (
-      <canvas
-        id='whiteboard-canvas'
-        className='whiteboard-canvas'
-        onMouseDown={handleMouseDown}
-        onMouseUp={() => { setMouseDown(false); }}
-        onMouseLeave={() => { setMouseDown(false); }}
-        onMouseMove={handleMouseMove}
-        width={918}
-        height={512}
-      />
+    <canvas
+      id='whiteboard-canvas'
+      className='whiteboard-canvas'
+      onMouseDown={handleMouseDown}
+      onMouseUp={() => { setMouseDown(false); }}
+      onMouseLeave={() => { setMouseDown(false); }}
+      onMouseMove={handleMouseMove}
+      width={918}
+      height={512}
+    />
   );
 };
 
