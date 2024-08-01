@@ -1,4 +1,5 @@
 export interface IState {
   size: number,
-  color: string
+  color: string,
+  connectionState: boolean
 }

@@ -1,0 +1,17 @@
+.lobby-join-create-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lobby-join-create-container,
+.lobby-join-create-container input {
+  text-align: center;
+}
+
+.lobby-join-create-container input,
+.lobby-join-create-container button {
+  font-size: 1.6rem;
+  width: 250px;
+  padding: 12px;
+}

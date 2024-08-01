@@ -1,17 +1,33 @@
+
+import { useSelector } from 'react-redux';
+
 import Header from '@/components/Header';
+import LobbyForm from './components/LobbyForm';
 import Whiteboard from '@/components/Whiteboard';
 import Controls from '@/components/Controls';
 import Info from './components/Info';
 
-const App = () => {
+import { IState } from './types';
 
+const App = () => {
+  const connectionState = useSelector((state: IState) => state.connectionState);
   return (
     <>
       <Header />
       <main>
-        <Info />
-        <Whiteboard />
-        <Controls />
+        {connectionState
+          ?
+          <>
+            <Info />
+            <Whiteboard />
+            <Controls />
+          </>
+          :
+          <>
+            <LobbyForm />
+          </>
+        }
+
       </main>
     </>
   );
