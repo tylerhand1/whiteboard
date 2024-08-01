@@ -4,6 +4,7 @@ import Controls from '@/components/Controls';
 import Info from './components/Info';
 
 const App = () => {
+
   return (
     <>
       <Header />
