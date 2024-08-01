@@ -27,7 +27,7 @@ connection.on('messageReceived', (username: string, message: string) => {
 });
 
 connection.on('Send', (message : string) => { 
-  console.log(message);
+  console.log('from send', message);
 });
 
 const start = async () => {
@@ -36,6 +36,7 @@ const start = async () => {
     console.log('SignalR Connected.');
     await connection.send('newMessage', 12345, 'message');
     await connection.invoke('AddToGroup', 'myGroup');
+    await connection.send('draw', { prevX: 0, prevY: 0, currX: 0, currY: 0 })
   } catch (err) {
     console.error(err);
   }
