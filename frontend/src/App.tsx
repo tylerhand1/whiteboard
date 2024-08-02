@@ -15,9 +15,8 @@ const App = () => {
   const isLoaded = useSelector((state: IState) => state.connection.isLoaded);
 
   const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
 
-  const tooSmall = (windowWidth < 1080) || (windowHeight < 850);
+  const tooSmall = windowWidth < 1080;
 
   return (
     <>
