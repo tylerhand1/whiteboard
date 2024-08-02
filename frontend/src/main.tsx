@@ -5,7 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import sizeReducer from '@/reducers/sizeReducer';
 import colorReducer from '@/reducers/colorReducer';
-import connectionStateReducer from '@/reducers/connectionStateReducer';
+import connectionReducer from '@/reducers/connectionReducer';
 
 import App from '@/App.tsx';
 import '@/stylesheets/index.css';
@@ -14,7 +14,7 @@ const store = configureStore({
   reducer: {
     size: sizeReducer,
     color: colorReducer,
-    connectionState: connectionStateReducer
+    connection: connectionReducer
   }
 });
 

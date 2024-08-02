@@ -10,7 +10,7 @@ import Info from './components/Info';
 import { IState } from './types';
 
 const App = () => {
-  const connectionState = useSelector((state: IState) => state.connectionState);
+  const connectionState = useSelector((state: IState) => state.connection.connectionState);
   return (
     <>
       <Header />

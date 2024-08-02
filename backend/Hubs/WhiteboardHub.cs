@@ -4,16 +4,26 @@ namespace backend.Hubs
 {
     public class WhiteboardHub : Hub
     {
-        public async Task NewMessage(long username, string message) =>
-            await Clients.All.SendAsync("messageReceived", username, message);
 
        public async Task Draw(DrawInfo drawInfo)
        {
             WhiteboardGroup? foundGroup = WhiteboardGroups.FindWhiteboardGroupBySocket(Context.ConnectionId);
             if (foundGroup != null)
             {
-                await Clients.Group(foundGroup.GroupName).SendAsync("Send", "Draw");
+                await Clients.Group(foundGroup.GroupName!).SendAsync("Send", "Draw");
             }
+        }
+
+        public async Task RequestJoin()
+        {
+            string? groupName = WhiteboardGroups.GenerateWhiteboardGroupName();
+            if (groupName == null)
+            {
+                await Clients.Caller.SendAsync("RequestFail", "No groups available");
+                return;
+            }
+
+            await AddToGroup(groupName);
         }
 
         public async Task AddToGroup(string groupName)
@@ -42,7 +52,7 @@ namespace backend.Hubs
             group.SocketsList.Add(Context.ConnectionId);
             WhiteboardGroups.Groups.Add(group);
 
-            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has joined the group {groupName}");
+            await Clients.Group(groupName).SendAsync("joinSuccess", Context.ConnectionId, groupName);
 
         }
         public async Task RemoveFromGroup(string groupName)

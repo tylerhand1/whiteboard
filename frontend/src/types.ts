@@ -1,5 +1,11 @@
+export interface IConnection {
+  connectionState: boolean,
+  socketId: string,
+  groupName: number
+}
+
 export interface IState {
   size: number,
   color: string,
-  connectionState: boolean
+  connection: IConnection
 }
