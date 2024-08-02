@@ -4,6 +4,8 @@ const initialState = {
     connectionState: false,
     socketId: '',
     groupName: 0,
+    isLoaded: false,
+    error: false
 }
 
 const connectionSlice = createSlice({
@@ -34,11 +36,27 @@ const connectionSlice = createSlice({
       };
       return updatedState; 
     },
-    reset(_state, _action) {
+    setIsLoaded(state, action: PayloadAction<boolean>) {
+      const isLoaded = action.payload;
+      const updatedState = {
+        ...state,
+        isLoaded,
+      };
+      return updatedState; 
+    },
+    setError(state, action: PayloadAction<boolean>) {
+      const error = action.payload;
+      const updatedState = {
+        ...state,
+        error,
+      };
+      return updatedState; 
+    },
+    resetConnection(_state) {
       return initialState;
     },
   },
 })
 
-export const { setConnectionState, setSocketId, setGroupname, reset } = connectionSlice.actions;
+export const { setConnectionState, setSocketId, setGroupname, setIsLoaded, setError, resetConnection } = connectionSlice.actions;
 export default connectionSlice.reducer;

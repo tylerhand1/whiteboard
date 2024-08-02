@@ -1,7 +1,9 @@
 export interface IConnection {
   connectionState: boolean,
   socketId: string,
-  groupName: number
+  groupName: number,
+  isLoaded: boolean,
+  error: boolean,
 }
 
 export interface IState {

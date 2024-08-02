@@ -35,7 +35,7 @@ namespace backend.Hubs
             }
             else
             {
-                await Clients.Caller.SendAsync("JoinFail", "Lobby does not exist");
+                await Clients.Caller.SendAsync("joinFail", "Lobby does not exist");
             }
         }
 
@@ -65,7 +65,7 @@ namespace backend.Hubs
             group.SocketsList.Add(Context.ConnectionId);
             WhiteboardGroups.Groups.Add(group);
 
-            await Clients.Group(groupName).SendAsync("joinSuccess", Context.ConnectionId, groupName);
+            await Clients.Caller.SendAsync("joinSuccess", Context.ConnectionId, groupName);
 
         }
         public async Task RemoveFromGroup(string groupName)
