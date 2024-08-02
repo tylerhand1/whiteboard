@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Diagnostics;
 
 namespace backend.Hubs
 {
@@ -19,7 +20,7 @@ namespace backend.Hubs
             string? groupName = WhiteboardGroups.GenerateWhiteboardGroupName();
             if (groupName == null)
             {
-                await Clients.Caller.SendAsync("RequestFail", "No groups available");
+                await Clients.Caller.SendAsync("requestFail", "No groups available");
                 return;
             }
 
@@ -44,7 +45,6 @@ namespace backend.Hubs
             string? socketFound = ConnectedSockets.FindConnectedSocket(Context.ConnectionId);
             if (socketFound != null)
             {
-                await Clients.Caller.SendAsync("Send", "Client is already in a room");
                 return;
             }
 
@@ -68,11 +68,23 @@ namespace backend.Hubs
             await Clients.Caller.SendAsync("joinSuccess", Context.ConnectionId, groupName);
 
         }
-        public async Task RemoveFromGroup(string groupName)
-        {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
 
-            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has left the group {groupName}.");
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            // Remove client from group
+            WhiteboardGroup? groupFound = WhiteboardGroups.FindWhiteboardGroupBySocket(Context.ConnectionId);
+            if (groupFound != null)
+            {
+                groupFound.SocketsList.Remove(Context.ConnectionId);
+
+                if (!groupFound.SocketsList.Any()) // should delete the group in WhiteboardGroups if there are no more sockets
+                {
+                    WhiteboardGroups.Groups.Remove(groupFound);
+                }
+
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupFound.GroupName!);
+            }
+            await base.OnDisconnectedAsync(null);
         }
     }
 }
