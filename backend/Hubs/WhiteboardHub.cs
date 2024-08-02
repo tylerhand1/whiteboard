@@ -10,11 +10,11 @@ namespace backend.Hubs
             WhiteboardGroup? foundGroup = WhiteboardGroups.FindWhiteboardGroupBySocket(Context.ConnectionId);
             if (foundGroup != null)
             {
-                await Clients.Group(foundGroup.GroupName!).SendAsync("Send", "Draw");
+                await Clients.Group(foundGroup.GroupName!).SendAsync("draw", drawInfo);
             }
         }
 
-        public async Task RequestJoin()
+        public async Task RequestLobby()
         {
             string? groupName = WhiteboardGroups.GenerateWhiteboardGroupName();
             if (groupName == null)
@@ -24,6 +24,19 @@ namespace backend.Hubs
             }
 
             await AddToGroup(groupName);
+        }
+
+        public async Task JoinLobby(string groupName)
+        {
+            WhiteboardGroup? groupFound = WhiteboardGroups.FindWhiteboardGroupByGroupName(groupName);
+            if (groupFound != null)
+            {
+                await AddToGroup(groupName);
+            }
+            else
+            {
+                await Clients.Caller.SendAsync("JoinFail", "Lobby does not exist");
+            }
         }
 
         public async Task AddToGroup(string groupName)
