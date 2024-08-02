@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IState } from '@/types';
+import { IDrawArgs, IState } from '@/types';
+import connection from '@/socket';
 
 const Whiteboard = () => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
@@ -38,22 +39,53 @@ const Whiteboard = () => {
       ctx.lineWidth = markerSize;
   }, [ctx, markerSize]);
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLElement>) => {
+  connection.on('draw', (drawArgs: IDrawArgs) => {
+    if (ctx) {
+      ctx.lineWidth = drawArgs.lineWidth;
+      ctx.strokeStyle = drawArgs.strokeStyle;
+      ctx.beginPath();
+      ctx.moveTo(drawArgs.prevX, drawArgs.prevY);
+      ctx.lineTo(drawArgs.currentX, drawArgs.currentY);
+      ctx.stroke();
+    }
+  });
+
+  const handleMouseDown = async (event: React.MouseEvent<HTMLElement>) => {
     if (canvas === null || ctx === null) {
       return;
     }
     setMouseDown(true);
 
-    const { clientX, clientY } = event;
+    const { clientX, clientY, button } = event;
     const leftOffset: number = canvas.getBoundingClientRect().left;
     const topOffset: number = canvas.getBoundingClientRect().top;
+
     setMousePosition({
       x: clientX - leftOffset,
       y: clientY - topOffset,
     });
+
+    if (button === 0) { // left mouse
+      ctx.lineWidth = markerSize;
+      ctx.strokeStyle = markerColor;
+      ctx.beginPath();
+
+      ctx.moveTo(clientX - leftOffset, clientY - topOffset);
+      ctx.lineTo(clientX - leftOffset, clientY - topOffset);
+      ctx.stroke();
+
+      await connection.send('draw', {
+        prevX: clientX - leftOffset,
+        prevY: clientY - topOffset,
+        currentX: clientX - leftOffset,
+        currentY: clientY - topOffset,
+        lineWidth: markerSize,
+        strokeStyle: markerColor,
+      });
+    }
   };
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMouseMove = async (event: React.MouseEvent<HTMLElement>) => {
     if (!mouseDown || canvas === null || ctx === null) {
       return;
     }
@@ -74,6 +106,15 @@ const Whiteboard = () => {
       });
       ctx.lineTo(clientX - leftOffset, clientY - topOffset);
       ctx.stroke();
+
+      await connection.send('draw', {
+        prevX: mousePosition.x,
+        prevY: mousePosition.y,
+        currentX: clientX - leftOffset,
+        currentY: clientY - topOffset,
+        lineWidth: markerSize,
+        strokeStyle: markerColor,
+      });
     }
   };
 
@@ -81,10 +122,10 @@ const Whiteboard = () => {
     <canvas
       id='whiteboard-canvas'
       className='whiteboard-canvas'
-      onMouseDown={handleMouseDown}
+      onMouseDown={e => { void handleMouseDown(e); }}
       onMouseUp={() => { setMouseDown(false); }}
       onMouseLeave={() => { setMouseDown(false); }}
-      onMouseMove={handleMouseMove}
+      onMouseMove={e => { void handleMouseMove(e); }}
       width={918}
       height={512}
     />
