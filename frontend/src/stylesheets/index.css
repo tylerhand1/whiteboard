@@ -50,6 +50,10 @@ h2 {
   font-size: 2.8rem;
 }
 
+.device-error {
+  text-align: center;
+}
+
 .info-container {
   width: 100%;
   display: flex;

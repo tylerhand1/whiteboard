@@ -14,11 +14,19 @@ const App = () => {
   const connectionState = useSelector((state: IState) => state.connection.connectionState);
   const isLoaded = useSelector((state: IState) => state.connection.isLoaded);
 
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+
+  const tooSmall = (windowWidth < 1080) || (windowHeight < 850);
+
   return (
     <>
       <Header />
       <main>
-        {connectionState && isLoaded
+        {tooSmall ?
+        <h2 className='device-error'>Sorry, this device is not supported on this site</h2>
+        :
+        connectionState && isLoaded
           ?
           <>
             <Info />
