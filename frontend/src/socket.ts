@@ -4,7 +4,7 @@ const connection = new signalR.HubConnectionBuilder()
   .withUrl('http://localhost:3000/hub')
   .build();
 
-connection.on('Send', (message : string) => { 
+connection.on('Send', (message : string) => {
   console.log('from send', message);
 });
 
@@ -13,9 +13,9 @@ export const start = async (): Promise<boolean> => {
     await connection.start();
     return true;
   } catch (err) {
-    console.error(err)
+    console.error(err);
     return false;
   }
-}
+};
 
 export default connection;

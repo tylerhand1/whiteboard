@@ -1,12 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
-    connectionState: false,
-    socketId: '',
-    groupName: 0,
-    isLoaded: false,
-    error: false
-}
+  connectionState: false,
+  socketId: '',
+  groupName: 0,
+  isLoaded: false,
+  error: false
+};
 
 const connectionSlice = createSlice({
   name: 'connection',
@@ -26,7 +26,7 @@ const connectionSlice = createSlice({
         ...state,
         socketId,
       };
-      return updatedState; 
+      return updatedState;
     },
     setGroupname(state, action: PayloadAction<number>) {
       const groupName = action.payload;
@@ -34,7 +34,7 @@ const connectionSlice = createSlice({
         ...state,
         groupName,
       };
-      return updatedState; 
+      return updatedState;
     },
     setIsLoaded(state, action: PayloadAction<boolean>) {
       const isLoaded = action.payload;
@@ -42,7 +42,7 @@ const connectionSlice = createSlice({
         ...state,
         isLoaded,
       };
-      return updatedState; 
+      return updatedState;
     },
     setError(state, action: PayloadAction<boolean>) {
       const error = action.payload;
@@ -50,13 +50,13 @@ const connectionSlice = createSlice({
         ...state,
         error,
       };
-      return updatedState; 
+      return updatedState;
     },
-    resetConnection(_state) {
+    resetConnection() {
       return initialState;
     },
   },
-})
+});
 
 export const { setConnectionState, setSocketId, setGroupname, setIsLoaded, setError, resetConnection } = connectionSlice.actions;
 export default connectionSlice.reducer;

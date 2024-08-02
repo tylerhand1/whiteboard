@@ -7,25 +7,35 @@ const LobbyForm = () => {
   const dispatch = useDispatch();
 
   connection.on('joinSuccess', (socketId: string, groupName: number) => {
-    dispatch(setSocketId(socketId))
-    dispatch(setGroupname(groupName))
+    dispatch(setSocketId(socketId));
+    dispatch(setGroupname(groupName));
     dispatch(setIsLoaded(true));
   });
 
-  connection.on('joinfail', (_message: string) => {
+  const failure = async () => {
     dispatch(resetConnection());
-    connection.stop();
+    await connection.stop();
 
-   dispatch(setError(true));
-   setTimeout(() => {
-    dispatch(setError(false))
-   }, 5 * 1000);
-  })
+    dispatch(setError(true));
+    setTimeout(() => {
+      dispatch(setError(false));
+    }, 5 * 1000);
+  };
+
+  connection.on('joinfail', async (message: string) => {
+    await failure();
+    console.error(message);
+  });
+
+  connection.on('requestFail', async (message: string) => {
+    await failure();
+    console.error(message);
+  });
 
   const startConnection = async () => {
     const connected = await start();
     dispatch(setConnectionState(connected));
-  }
+  };
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -33,19 +43,19 @@ const LobbyForm = () => {
 
     await startConnection();
 
-    await connection.send('joinLobby', code)
-  }
+    await connection.send('joinLobby', code);
+  };
 
   const handleClick = async () => {
     await startConnection();
 
     await connection.send('requestLobby');
     dispatch(setIsLoaded(true));
-  }
+  };
 
   return (
     <div className='lobby-join-create-container'>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={e => { void handleSubmit(e); }}>
         <input
           type='tel'
           placeholder='Lobby Code'
@@ -53,7 +63,7 @@ const LobbyForm = () => {
         />
       </form>
       <h2>or</h2>
-      <button onClick={handleClick}>
+      <button onClick={() => { void handleClick(); }}>
         Create new lobby
       </button>
     </div>

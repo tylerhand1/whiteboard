@@ -135,10 +135,10 @@ const Whiteboard = () => {
     <canvas
       id='whiteboard-canvas'
       className='whiteboard-canvas'
-      onMouseDown={handleMouseDown}
+      onMouseDown={e => { void handleMouseDown(e); }}
       onMouseUp={() => { setMouseDown(false); }}
       onMouseLeave={() => { setMouseDown(false); }}
-      onMouseMove={handleMouseMove}
+      onMouseMove={e => { void handleMouseMove(e); }}
       width={918}
       height={512}
     />
