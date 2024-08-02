@@ -11,3 +11,12 @@ export interface IState {
   color: string,
   connection: IConnection
 }
+
+export interface IDrawArgs {
+  prevX: number,
+  prevY: number,
+  currentX: number,
+  currentY: number,
+  lineWidth: number,
+  strokeStyle: string
+}

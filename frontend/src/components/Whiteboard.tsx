@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IState } from '@/types';
+import { IDrawArgs, IState } from '@/types';
 import connection from '@/socket';
 
 const Whiteboard = () => {
@@ -39,15 +39,6 @@ const Whiteboard = () => {
       ctx.lineWidth = markerSize;
   }, [ctx, markerSize]);
 
-  interface IDrawArgs {
-    prevX: number,
-    prevY: number,
-    currentX: number,
-    currentY: number,
-    lineWidth: number,
-    strokeStyle: string
-  }
-
   connection.on('draw', (drawArgs: IDrawArgs) => {
     if (ctx) {
       ctx.lineWidth = drawArgs.lineWidth;
@@ -68,6 +59,7 @@ const Whiteboard = () => {
     const { clientX, clientY, button } = event;
     const leftOffset: number = canvas.getBoundingClientRect().left;
     const topOffset: number = canvas.getBoundingClientRect().top;
+
     setMousePosition({
       x: clientX - leftOffset,
       y: clientY - topOffset,
@@ -77,11 +69,6 @@ const Whiteboard = () => {
       ctx.lineWidth = markerSize;
       ctx.strokeStyle = markerColor;
       ctx.beginPath();
-
-      setMousePosition({
-        x: clientX - leftOffset,
-        y: clientY - topOffset,
-      });
 
       ctx.moveTo(clientX - leftOffset, clientY - topOffset);
       ctx.lineTo(clientX - leftOffset, clientY - topOffset);
