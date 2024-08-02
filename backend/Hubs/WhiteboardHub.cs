@@ -9,10 +9,7 @@ namespace backend.Hubs
        public async Task Draw(DrawInfo drawInfo)
        {
             WhiteboardGroup? foundGroup = WhiteboardGroups.FindWhiteboardGroupBySocket(Context.ConnectionId);
-            if (foundGroup != null)
-            {
-                await Clients.Group(foundGroup.GroupName!).SendAsync("draw", drawInfo);
-            }
+            await Clients.GroupExcept(foundGroup?.GroupName!, Context.ConnectionId).SendAsync("draw", drawInfo);
         }
 
         public async Task RequestLobby()
